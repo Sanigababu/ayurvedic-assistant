@@ -1,30 +1,37 @@
-# Streamlit app optimization
+# Ayurvedic Assistant
 
-*Automatically synced with your [v0.dev](https://v0.dev) deployments*
-
-[![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?style=for-the-badge&logo=vercel)](https://vercel.com/anushkab0602-gmailcoms-projects/v0-streamlit-app-optimization)
-[![Built with v0](https://img.shields.io/badge/Built%20with-v0.dev-black?style=for-the-badge)](https://v0.dev/chat/projects/nWBPX1ox4kd)
+A conversational AI chatbot that provides Ayurvedic wellness advice, remedies, and lifestyle recommendations based on traditional principles.
 
 ## Overview
 
-This repository will stay in sync with your deployed chats on [v0.dev](https://v0.dev).
-Any changes you make to your deployed app will be automatically pushed to this repository from [v0.dev](https://v0.dev).
+Ayurvedic Assistant is a Next.js application that leverages the power of Grok AI to provide personalized Ayurvedic wellness advice. The assistant offers natural remedies, lifestyle recommendations, and holistic wellness guidance based on traditional Ayurvedic principles.
 
-## Deployment
+## Features
 
-Your project is live at:
+- **Conversational Interface**: Natural, ChatGPT-style conversations about Ayurvedic topics
+- **Ayurvedic Knowledge**: Information on doshas, herbs, remedies, and lifestyle practices
+- **Responsive Design**: Works seamlessly on both desktop and mobile devices
+- **Markdown Support**: Formatted responses with headings and bullet points for better readability
+- **Real-time Streaming**: Responses appear in real-time for a smooth user experience
 
-**[https://vercel.com/anushkab0602-gmailcoms-projects/v0-streamlit-app-optimization](https://vercel.com/anushkab0602-gmailcoms-projects/v0-streamlit-app-optimization)**
+## Technology Stack
 
-## Build your app
+- **Frontend**: Next.js, React, Tailwind CSS
+- **UI Components**: shadcn/ui
+- **AI Integration**: Grok via Vercel AI SDK
+- **Deployment**: Vercel
 
-Continue building your app on:
+## Getting Started
 
-**[https://v0.dev/chat/projects/nWBPX1ox4kd](https://v0.dev/chat/projects/nWBPX1ox4kd)**
+### Prerequisites
 
-## How It Works
+- Node.js 18.x or later
+- Vercel account
+- Grok API access
 
-1. Create and modify your project using [v0.dev](https://v0.dev)
-2. Deploy your chats from the v0 interface
-3. Changes are automatically pushed to this repository
-4. Vercel deploys the latest version from this repository
+### Installation
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/yourusername/ayurvedic-assistant.git
+   cd ayurvedic-assistant

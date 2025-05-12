@@ -1,8 +1,7 @@
 # Ayurvedic Assistant
 
 A conversational AI chatbot that provides Ayurvedic wellness advice, remedies, and lifestyle recommendations based on traditional principles.
-markdown
-(https://ayurvedic-assistant.vercel.app/)
+[Vercel](https://ayurvedic-assistant.vercel.app/)
 
 ## Overview
 

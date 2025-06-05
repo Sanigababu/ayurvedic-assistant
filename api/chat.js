@@ -1,4 +1,4 @@
-import { StreamingTextResponse, streamText } from 'ai';
+import { streamText } from 'ai';
 
 export const runtime = 'edge';
 
@@ -45,12 +45,12 @@ Guidelines:
 
     const fullMessages = [SYSTEM_MESSAGE, ...messages];
 
-    const response = await streamText({
+    const result = await streamText({
       model: 'grok-3',
       messages: fullMessages,
     });
 
-    return new StreamingTextResponse(response, { headers });
+    return result.toDataStreamResponse({ headers });
   } catch (error) {
     return new Response(JSON.stringify({ error: error.message || 'Internal Server Error' }), {
       status: 500,
@@ -58,4 +58,3 @@ Guidelines:
     });
   }
 }
-

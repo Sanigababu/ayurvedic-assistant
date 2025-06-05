@@ -1,30 +1,26 @@
-import { createClient } from '@ai-sdk/xai';
+import { StreamingTextResponse, streamText } from 'ai';
 
 export const runtime = 'edge';
 
-const client = createClient({
-  model: 'grok-3',
-});
-
+// CORS headers for mobile app usage
 const headers = {
   'Content-Type': 'application/json',
-  'Access-Control-Allow-Origin': '*',        
+  'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
   'Access-Control-Allow-Headers': 'Content-Type',
 };
 
 export default async function handler(req) {
-  // Handle CORS preflight request
+  // Handle CORS preflight
   if (req.method === 'OPTIONS') {
     return new Response(null, { status: 204, headers });
   }
 
-  // Only allow POST method
   if (req.method !== 'POST') {
-    return new Response(
-      JSON.stringify({ error: 'Only POST requests are allowed' }),
-      { status: 405, headers }
-    );
+    return new Response(JSON.stringify({ error: 'Only POST requests are allowed' }), {
+      status: 405,
+      headers,
+    });
   }
 
   try {
@@ -49,18 +45,17 @@ Guidelines:
 
     const fullMessages = [SYSTEM_MESSAGE, ...messages];
 
-    // Call Grok 3 chat model
-    const response = await client.chat.full(fullMessages);
+    const response = await streamText({
+      model: 'grok-3',
+      messages: fullMessages,
+    });
 
-    // Extract reply content
-    const reply = response.choices[0].message.content;
-
-    return new Response(JSON.stringify({ response: reply }), { headers });
+    return new StreamingTextResponse(response, { headers });
   } catch (error) {
-    return new Response(
-      JSON.stringify({ error: error.message || 'Internal Server Error' }),
-      { status: 500, headers }
-    );
+    return new Response(JSON.stringify({ error: error.message || 'Internal Server Error' }), {
+      status: 500,
+      headers,
+    });
   }
 }
 

@@ -1,23 +1,15 @@
 // api/chat.js
-import { createChat } from 'ai';
+import { StreamingTextResponse, streamText } from 'ai';
+import { grok } from '@ai-sdk/grok'; // This handles grok-3 without manual API key
 
-export const runtime = 'edge'; // Run as edge function for speed
+export const runtime = 'edge'; // Edge function for better performance
 
-// Initialize Grok 3 model chat client
-const chat = createChat({
-  model: 'grok-3',
-});
+export async function POST(req) {
+  const { messages } = await req.json();
 
-// Define the API handler
-export default async function handler(req) {
-  try {
-    // Parse incoming JSON body with chat messages
-    const { messages } = await req.json();
-
-    // Insert system prompt as the first message
-    const SYSTEM_MESSAGE = {
-      role: 'system',
-      content: `You are an Ayurvedic Assistant, an expert in traditional Indian medicine and holistic wellness.
+  const SYSTEM_MESSAGE = {
+    role: 'system',
+    content: `You are an Ayurvedic Assistant, an expert in traditional Indian medicine and holistic wellness.
 
 Guidelines:
 - Be conversational, natural, and engaging like ChatGPT.
@@ -30,28 +22,14 @@ Guidelines:
 - Use headings and bullet points for remedies.
 - Emphasize advice is not a substitute for professional medical care.
 - Redirect questions outside Ayurveda to medical professionals.`
-    };
+  };
 
-    // Combine system message with user messages
-    const fullMessages = [SYSTEM_MESSAGE, ...messages];
+  const fullMessages = [SYSTEM_MESSAGE, ...messages];
 
-    // Call the Grok 3 model via Vercel AI SDK
-    const response = await chat({
-      messages: fullMessages,
-    });
+  const result = await streamText({
+    model: grok('grok-3'),
+    messages: fullMessages,
+  });
 
-    // Extract the assistant's reply text
-    const reply = response.choices[0].message.content;
-
-    // Return the reply as JSON
-    return new Response(JSON.stringify({ response: reply }), {
-      headers: { 'Content-Type': 'application/json' },
-    });
-  } catch (error) {
-    // Handle errors gracefully
-    return new Response(JSON.stringify({ error: error.message }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json' },
-    });
-  }
+  return new StreamingTextResponse(result);
 }

@@ -65,8 +65,3 @@ Guidelines:
   }
 }
 
-    messages: [SYSTEM_MESSAGE, ...messages],
-  });
-
-  return new StreamingTextResponse(response);
-}

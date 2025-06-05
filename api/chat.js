@@ -2,7 +2,7 @@ export const runtime = 'edge';
 
 import { streamText } from 'ai';
 
-export default async function handler(req) {
+export default async function handler(req: Request) {
   const headers = {
     'Content-Type': 'application/json',
     'Access-Control-Allow-Origin': '*',
@@ -10,10 +10,12 @@ export default async function handler(req) {
     'Access-Control-Allow-Headers': 'Content-Type',
   };
 
+  // Handle CORS preflight
   if (req.method === 'OPTIONS') {
     return new Response(null, { status: 204, headers });
   }
 
+  // Only allow POST requests
   if (req.method !== 'POST') {
     return new Response(JSON.stringify({ error: 'Only POST requests are allowed' }), {
       status: 405,
@@ -42,8 +44,8 @@ Guidelines:
     };
 
     const result = await streamText({
-      // No model needed if you're relying on the Vercel AI SDK default
       messages: [SYSTEM_MESSAGE, ...messages],
+      // model: 'grok-1' // Optional: only if overriding Vercel project default
     });
 
     return new Response(result.toReadableStream(), {
@@ -52,17 +54,11 @@ Guidelines:
         'Access-Control-Allow-Origin': '*',
       },
     });
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error:', error);
     return new Response(JSON.stringify({ error: error.message || 'Internal Server Error' }), {
       status: 500,
       headers,
     });
   }
-}
-
-  return new Response(
-    JSON.stringify({ response: '✅ Ayurvedic Assistant API is up!' }),
-    { status: 200, headers }
-  );
 }

@@ -1,5 +1,4 @@
-import { createChat } from 'ai';
-
+import { groq, streamText } from 'ai';
 export const runtime = 'edge';
 
 // Initialize Grok 3 chat client once

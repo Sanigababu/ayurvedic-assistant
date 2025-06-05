@@ -1,8 +1,8 @@
 // api/chat.js
-import { StreamingTextResponse, streamText } from 'ai';
-import { grok } from '@ai-sdk/grok'; // This handles grok-3 without manual API key
+import { StreamingTextResponse, Message, streamText } from 'ai';
+import { groq } from 'ai';
 
-export const runtime = 'edge'; // Edge function for better performance
+export const runtime = 'edge';
 
 export async function POST(req) {
   const { messages } = await req.json();
@@ -21,15 +21,13 @@ Guidelines:
 - Be warm, compassionate, respectful.
 - Use headings and bullet points for remedies.
 - Emphasize advice is not a substitute for professional medical care.
-- Redirect questions outside Ayurveda to medical professionals.`
+- Redirect questions outside Ayurveda to medical professionals.`,
   };
 
-  const fullMessages = [SYSTEM_MESSAGE, ...messages];
-
-  const result = await streamText({
-    model: grok('grok-3'),
-    messages: fullMessages,
+  const response = await streamText({
+    model: groq('grok-3'),
+    messages: [SYSTEM_MESSAGE, ...messages],
   });
 
-  return new StreamingTextResponse(result);
+  return new StreamingTextResponse(response);
 }

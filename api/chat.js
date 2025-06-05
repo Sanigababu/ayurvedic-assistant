@@ -2,7 +2,7 @@ export const runtime = 'edge';
 
 import { streamText } from 'ai';
 
-export default async function handler(req: Request) {
+export default async function handler(req) {
   const headers = {
     'Content-Type': 'application/json',
     'Access-Control-Allow-Origin': '*',
@@ -45,7 +45,7 @@ Guidelines:
 
     const result = await streamText({
       messages: [SYSTEM_MESSAGE, ...messages],
-      // model: 'grok-1' // Optional: only if overriding Vercel project default
+      
     });
 
     return new Response(result.toReadableStream(), {
@@ -54,7 +54,7 @@ Guidelines:
         'Access-Control-Allow-Origin': '*',
       },
     });
-  } catch (error: any) {
+  } catch (error) {
     console.error('Error:', error);
     return new Response(JSON.stringify({ error: error.message || 'Internal Server Error' }), {
       status: 500,

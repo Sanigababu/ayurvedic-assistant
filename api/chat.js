@@ -1,5 +1,5 @@
 // api/chat.js
-import { createChat } from '@vercel/ai';
+import { StreamingTextResponse, Message, OpenAIStream } from 'ai';;
 
 export const runtime = 'edge'; // Run as edge function for speed
 

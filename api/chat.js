@@ -1,15 +1,14 @@
-import { groq, streamText } from 'ai';
+import { createClient } from '@ai-sdk/xai';
+
 export const runtime = 'edge';
 
-// Initialize Grok 3 chat client once
-const chat = createChat({
+const client = createClient({
   model: 'grok-3',
 });
 
-// Common headers with CORS
 const headers = {
   'Content-Type': 'application/json',
-  'Access-Control-Allow-Origin': '*',        // Allow all origins for development
+  'Access-Control-Allow-Origin': '*',        
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
   'Access-Control-Allow-Headers': 'Content-Type',
 };
@@ -20,7 +19,7 @@ export default async function handler(req) {
     return new Response(null, { status: 204, headers });
   }
 
-  // Only allow POST
+  // Only allow POST method
   if (req.method !== 'POST') {
     return new Response(
       JSON.stringify({ error: 'Only POST requests are allowed' }),
@@ -50,17 +49,18 @@ Guidelines:
 
     const fullMessages = [SYSTEM_MESSAGE, ...messages];
 
-    // Call Grok 3 chat model via Vercel AI SDK
-    const response = await chat({ messages: fullMessages });
+    // Call Grok 3 chat model
+    const response = await client.chat.full(fullMessages);
 
+    // Extract reply content
     const reply = response.choices[0].message.content;
 
     return new Response(JSON.stringify({ response: reply }), { headers });
   } catch (error) {
-    return new Response(JSON.stringify({ error: error.message || 'Internal Server Error' }), {
-      status: 500,
-      headers,
-    });
+    return new Response(
+      JSON.stringify({ error: error.message || 'Internal Server Error' }),
+      { status: 500, headers }
+    );
   }
 }
 
